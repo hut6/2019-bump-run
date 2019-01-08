@@ -1,0 +1,7 @@
+version: '3.6'
+
+services:
+  web:
+    image: hut6/bump-run:${TAG-latest}
+    ports:
+      - 80:80
