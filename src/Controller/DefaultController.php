@@ -8,7 +8,6 @@ namespace App\Controller;
 
 use App\Response;
 use Rollerworks\Component\Version\Version;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +26,6 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Method(methods={"GET","POST"})
      * @Route("/{stability}/{version}", name="bump")
      * @Route("/{stability}", name="bump_post")
      * @param Request $request
