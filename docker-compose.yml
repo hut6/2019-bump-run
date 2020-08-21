@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+
+    php:
+        container_name: ${DIR}
+        image: webdevops/php-apache-dev:7.4
+        networks:
+            - dev_traefik
+        volumes:
+            - .:/app
+        environment:
+            CONTAINER_UID: ${UID}
+            WEB_DOCUMENT_ROOT: /app/public
+            WEB_DOCUMENT_INDEX: index.php
+            PHP_POST_MAX_SIZE: 256M
+            PHP_UPLOAD_MAX_FILESIZE: 256M
+            PHP_MEMORY_LIMIT: 1024M
+            PHP_MAX_EXECUTION_TIME: 600
+            PHP_OPCACHE_MEMORY_CONSUMPTION: 800M
+            PHP_OPCACHE_MAX_ACCELERATED_FILES: 20000
+            php.max_input_vars: 10000
+            PHP_DEBUGGER: none
+            PHP_DISMOD: ioncube,redis,xdebug,${PHP_DISMOD:-}
+
+            # Uncomment to enable xdebug
+            PHP_DEBUGGER: xdebug
+            PHP_DISMOD: ioncube,redis,${PHP_DISMOD:-}
+            XDEBUG_REMOTE_AUTOSTART: 1
+            php.xdebug.remote_log: /app/xdebug.log
+
+        labels:
+            - "traefik.enable=true"
+            - "traefik.port=80"
+            - "traefik.http.routers.${DIR}-php.rule=Host(`${DIR}.h6.vc`)"
+            - "traefik.http.routers.${DIR}-php.tls=true"
+
+networks:
+    dev_traefik:
+        name: dev_traefik
+        external: true
